@@ -6,7 +6,9 @@ module V0
     before_action(:tag_rainbows)
 
     def create
-      claim = SavedClaim::EducationBenefits.form_class(form_type).new(education_benefits_claim_params)
+      validate_session
+
+      claim = SavedClaim::EducationBenefits.form_class(form_type).new(claim_params)
 
       unless claim.save
         StatsD.increment("#{stats_key}.failure")
@@ -15,12 +17,15 @@ module V0
 
       StatsD.increment("#{stats_key}.success")
       Rails.logger.info "ClaimID=#{claim.id} RPO=#{claim.education_benefits_claim.region} Form=#{form_type}"
-      validate_session
       clear_saved_form(claim.form_id)
       render(json: claim.education_benefits_claim)
     end
 
     private
+
+    def claim_params
+      education_benefits_claim_params.merge(user_uuid: @current_user&.uuid)
+    end
 
     def form_type
       params[:form_type] || '1990'

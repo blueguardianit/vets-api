@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190201211124) do
+ActiveRecord::Schema.define(version: 20190207114300) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20190201211124) do
     t.string   "regional_processing_office",                  null: false
     t.string   "form_type",                  default: "1990"
     t.integer  "saved_claim_id",                              null: false
+    t.string   "user_uuid"
   end
 
   add_index "education_benefits_claims", ["created_at"], name: "index_education_benefits_claims_on_created_at", using: :btree
