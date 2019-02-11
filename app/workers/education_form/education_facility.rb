@@ -72,6 +72,11 @@ module EducationForm
       # special case Philippines
       if address&.country == 'PHL' || model.form_type == '0993'
         return :western
+      elsif model.form_type == '1990'
+        vet_tec_form = EducationBenefitsSubmission
+                       .where(user_uuid: model.user_uuid, form_type: '0994')
+                       .where.not(user_uuid: nil).first
+        return vet_tec_form.nil? ? check_area(address) : :eastern
       elsif model.form_type == '0994'
         return :eastern
       end

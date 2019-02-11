@@ -8,7 +8,9 @@ module V0
     def create
       validate_session
 
-      claim = SavedClaim::EducationBenefits.form_class(form_type).new(claim_params)
+      claim = SavedClaim::EducationBenefits.form_class(form_type).new(education_benefits_claim_params)
+
+      claim.user_uuid = @current_user.uuid unless @current_user.nil?
 
       unless claim.save
         StatsD.increment("#{stats_key}.failure")
@@ -22,10 +24,6 @@ module V0
     end
 
     private
-
-    def claim_params
-      education_benefits_claim_params.merge(user_uuid: @current_user&.uuid)
-    end
 
     def form_type
       params[:form_type] || '1990'

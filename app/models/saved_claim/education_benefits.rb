@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class SavedClaim::EducationBenefits < SavedClaim
+  attr_accessor :user_uuid
+
   has_one(:education_benefits_claim, foreign_key: 'saved_claim_id', inverse_of: :saved_claim)
 
   validates(:education_benefits_claim, presence: true)

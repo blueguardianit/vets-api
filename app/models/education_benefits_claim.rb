@@ -21,9 +21,9 @@ class EducationBenefitsClaim < ActiveRecord::Base
 
   delegate(:parsed_form, to: :saved_claim)
   delegate(:form, to: :saved_claim)
+  delegate(:user_uuid, to: :saved_claim)
 
   before_save(:set_region)
-  before_save(:set_user_uuid)
   after_create(:create_education_benefits_submission)
   after_save(:update_education_benefits_submission_status)
 
@@ -132,6 +132,7 @@ class EducationBenefitsClaim < ActiveRecord::Base
       opt.merge(
         region: region,
         form_type: form_type,
+        user_uuid: saved_claim.user_uuid,
         education_benefits_claim: self
       )
     )
@@ -142,10 +143,6 @@ class EducationBenefitsClaim < ActiveRecord::Base
       # old claims don't have an education benefits submission associated
       education_benefits_submission&.update_attributes!(status: 'processed')
     end
-  end
-
-  def set_user_uuid
-    self.user_uuid = saved_claim.user_uuid
   end
 
   def set_region

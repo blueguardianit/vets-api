@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20190207114300) do
+ActiveRecord::Schema.define(version: 20190211161448) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,7 +133,6 @@ ActiveRecord::Schema.define(version: 20190207114300) do
     t.string   "regional_processing_office",                  null: false
     t.string   "form_type",                  default: "1990"
     t.integer  "saved_claim_id",                              null: false
-    t.string   "user_uuid"
   end
 
   add_index "education_benefits_claims", ["created_at"], name: "index_education_benefits_claims_on_created_at", using: :btree
@@ -155,10 +154,12 @@ ActiveRecord::Schema.define(version: 20190207114300) do
     t.boolean  "transfer_of_entitlement",     default: false,       null: false
     t.boolean  "chapter1607",                 default: false,       null: false
     t.boolean  "vettec",                      default: false
+    t.string   "user_uuid"
   end
 
   add_index "education_benefits_submissions", ["education_benefits_claim_id"], name: "index_education_benefits_claim_id", unique: true, using: :btree
   add_index "education_benefits_submissions", ["region", "created_at", "form_type"], name: "index_edu_benefits_subs_ytd", using: :btree
+  add_index "education_benefits_submissions", ["user_uuid", "form_type"], name: "index_edu_benefits_on_user_uuid_and_form_type", using: :btree
 
   create_table "evss_claims", force: :cascade do |t|
     t.integer  "evss_id",                            null: false
