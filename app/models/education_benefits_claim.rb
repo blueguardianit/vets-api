@@ -127,7 +127,6 @@ class EducationBenefitsClaim < ActiveRecord::Base
 
   def create_education_benefits_submission
     opt = selected_benefits
-
     EducationBenefitsSubmission.create!(
       opt.merge(
         region: region,

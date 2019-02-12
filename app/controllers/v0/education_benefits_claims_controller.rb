@@ -9,7 +9,6 @@ module V0
       validate_session
 
       claim = SavedClaim::EducationBenefits.form_class(form_type).new(education_benefits_claim_params)
-
       claim.user_uuid = @current_user.uuid unless @current_user.nil?
 
       unless claim.save
